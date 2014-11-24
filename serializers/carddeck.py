@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 from random import shuffle
+from rest_framework import serializers
 
 class NoThanksCard(object):
     
-    _card_set = ( '1', '2', '3', '4', '5', '6', '7', '8', '9', 
+    _card_set = (  '3', '4', '5', '6', '7', '8', '9', 
              '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
              '20', '21', '22', '23', '24', '25', '26', '27', '28', '29',
              '30', '31', '32', '33', '34', '35', '36' )
@@ -29,6 +30,14 @@ class NoThanksCard(object):
 
     def is_valid(self):
         return self.name in self.card_set
+
+class NoThanksCardSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length = 2)
+
+    def restore_object(self, attrs, instance = None):
+        if not instance:
+            instance.name = attrs.get('name', instance.name)
+    return NoThanksCard(**attrs)
 
 class NoThanksCardDeck(object):
 
